@@ -1,0 +1,49 @@
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+*.log
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+target/
+build/**/*.jar
+
+### dotnet build folder ###
+out/
+
+### Node ###
+node_modules/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Flattened pom
+**/.flattened-pom.xml
+
+# Maven Wrapper
+.mvn/wrapper/maven-wrapper.jar
+
+
+# Exclude all secondary spring yml files
+**/application-*.yml
+
+# Maintain only some spring yml files
+!**/application-dev.yml

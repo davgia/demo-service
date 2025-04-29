@@ -1,0 +1,123 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: demo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-service
+  namespace: demo
+  labels:
+    app.kubernetes.io/instance: demo-service
+    app.kubernetes.io/name: demo-service
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: demo-service
+      app.kubernetes.io/name: demo-service
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: demo-service
+        app.kubernetes.io/name: demo-service
+    spec:
+      serviceAccount: demo-service
+      serviceAccountName: demo-service
+      containers:
+      - name: demo-service
+        image: dgia/demo-service:1.0.0
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 200m
+            memory: 256Mi
+          limits:
+            cpu: "4"
+            memory: 512Mi
+        env:
+        - name: SPRING_CLOUD_KUBERNETES_SECRETS_PATHS
+          value: /etc/secrets/demo-service
+        volumeMounts:
+        - mountPath: /etc/secrets/demo-service
+          name: demo-service-volume
+          readOnly: true
+      volumes:
+      - name: demo-service-volume
+        secret:
+          secretName: demo-service
+---
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: demo-service
+#   namespace: demo
+#   labels:
+#     app.kubernetes.io/instance: demo-service
+#     app.kubernetes.io/name: demo-service
+# data:
+#   application.yml: |
+#     demo:
+#       required-secret: "loaded-from-configmap"
+---
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: demo-service
+  namespace: demo
+  labels:
+    app.kubernetes.io/instance: demo-service
+    app.kubernetes.io/name: demo-service
+stringData:
+  demo.required-secret: "loaded-from-secrets"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
+    app.kubernetes.io/instance: demo-service
+    app.kubernetes.io/name: demo-service
+  name: demo-service
+  namespace: demo
+rules:
+- apiGroups:
+  - ""
+  - extensions
+  - apps
+  resources:
+  - services
+  - pods
+  - endpoints
+  - configmaps
+  verbs:
+  - get
+  - watch
+  - list
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/instance: demo-service
+    app.kubernetes.io/name: demo-service
+  name: demo-service
+  namespace: demo
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: demo-service
+subjects:
+- kind: ServiceAccount
+  name: demo-service
+  namespace: demo
+---
+apiVersion: v1
+automountServiceAccountToken: true
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/instance: demo-service
+    app.kubernetes.io/name: demo-service
+  name: demo-service
+  namespace: demo

@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: demo-service
+  main:
+    web-application-type: reactive
+  profiles:
+    group:
+      "kubernetes": "docker,kubernetes"
+
+# listening port
+server:
+  port: 8080
+
+# logging
+logging:
+  level:
+    ROOT: ERROR
+    org.demo: INFO
+
+---
+spring:
+  main:
+    banner-mode: "off"
+  config:
+    activate:
+      on-profile: docker
+    import: "optional:configserver:http://config-server:8888"
+
+---
+spring:
+  config:
+    activate:
+      on-profile: kubernetes
+    import: "kubernetes:"
