@@ -32,3 +32,8 @@ spring:
     activate:
       on-profile: kubernetes
     import: "kubernetes:"
+
+# on kubernetes environment config-server do not need to register to eureka
+eureka:
+  client:
+    enabled: false
