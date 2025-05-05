@@ -22,7 +22,6 @@
 /.nb-gradle/
 
 target/
-build/**/*.jar
 
 ### dotnet build folder ###
 out/
@@ -40,10 +39,3 @@ __pycache__/
 
 # Maven Wrapper
 .mvn/wrapper/maven-wrapper.jar
-
-
-# Exclude all secondary spring yml files
-**/application-*.yml
-
-# Maintain only some spring yml files
-!**/application-dev.yml
