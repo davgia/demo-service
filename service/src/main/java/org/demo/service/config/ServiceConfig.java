@@ -35,7 +35,7 @@ public class ServiceConfig {
     protected Boolean checkInternalConfig(final InternalBaseR2dbcConfig config) throws JsonProcessingException {
         final var serialized = objectMapper.writeValueAsString(config.getR2dbc().getMssql().entrySet());
 
-        log.info("Internal library: {}", serialized);
+        log.info("Internal: {}", serialized);
 
         final var conn = config.getR2dbc().getMssql().values().stream().findFirst().orElseThrow();
         if (Objects.equals(conn.getUri(), "") || Objects.equals(conn.getPassword(), "")) {
@@ -49,7 +49,7 @@ public class ServiceConfig {
     protected Boolean checkConfig(final BaseR2dbcConfig config) throws JsonProcessingException {
         final var serialized = objectMapper.writeValueAsString(config.getR2dbc().getMssql().entrySet());
 
-        log.info("External library: {}", serialized);
+        log.info("External: {}", serialized);
 
         final var conn = config.getR2dbc().getMssql().values().stream().findFirst().orElseThrow();
         if (Objects.equals(conn.getUri(), "") || Objects.equals(conn.getPassword(), "")) {
