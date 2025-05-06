@@ -1,7 +1,0 @@
-demo:
-  connections:
-    r2dbc:
-      mssql:
-        test-res:
-          uri: r2dbc:sqlserver://sa@localhost:1433/test
-          password: test

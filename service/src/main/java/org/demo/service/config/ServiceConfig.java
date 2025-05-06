@@ -7,7 +7,6 @@ import org.demo.config.properties.BaseR2dbcConfig;
 import org.demo.service.config.properties.InternalBaseR2dbcConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,14 +20,12 @@ public class ServiceConfig {
     protected ObjectMapper objectMapper;
 
     @Bean
-    @RefreshScope
     @ConfigurationProperties(prefix = "demo.connections")
     public InternalBaseR2dbcConfig getInternalR2dbcConfig() {
         return new InternalBaseR2dbcConfig();
     }
 
     @Bean
-    @RefreshScope
     @ConfigurationProperties(prefix = "demo.connections")
     public BaseR2dbcConfig getExternalR2dbcConfig() {
         return new BaseR2dbcConfig();
